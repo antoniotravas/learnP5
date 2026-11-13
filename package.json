@@ -1,0 +1,14 @@
+{
+  "name": "learnp5",
+  "private": true,
+  "description": "Site para aprender p5.js (desenho e animação) — ferramentas e testes.",
+  "type": "module",
+  "scripts": {
+    "content": "node tools/build_content.mjs",
+    "test": "node --test --test-concurrency=1 \"tests/*.test.mjs\"",
+    "dist": "node tools/build_dist.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "1.56.1"
+  }
+}

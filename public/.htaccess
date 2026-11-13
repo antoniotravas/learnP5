@@ -1,0 +1,22 @@
+Options -Indexes
+DirectoryIndex index.html
+
+RewriteEngine On
+
+# Só HTTPS (o cookie de sessão é "Secure" em produção).
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Ficheiros ocultos (.htaccess, .git, ...) nunca são servidos.
+RewriteRule (^|/)\. - [F,L]
+
+# API: tudo em /api/* vai para o api.php.
+RewriteRule ^api/ api.php [L,QSA]
+
+# Obriga o browser a confirmar se o HTML/JS/CSS mudou, para não usar código desatualizado.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|js|css)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>

@@ -1,0 +1,1157 @@
+[
+ {
+  "id": "tela",
+  "track": "Desenho",
+  "title": "A tela e as coordenadas",
+  "icon": "🖼️",
+  "summary": "O que é o p5.js, setup(), createCanvas() e o sistema de coordenadas.",
+  "lesson": "# A tela e as coordenadas\n\nO **p5.js** é uma biblioteca de JavaScript criada para artistas, designers e estudantes: com poucas linhas de código consegues desenhar, animar e criar coisas interativas no browser. É usada em escolas e por artistas de todo o mundo, e tudo o que aprenderes aqui serve também para JavaScript \"a sério\".\n\n## O primeiro sketch\n\nUm programa de p5.js chama-se **sketch** (esboço). O mais simples de todos é este:\n\n```js\nfunction setup() {\n  createCanvas(400, 300);\n  background(220);\n}\n```\n\n- `function setup() { ... }` define a função **setup**. O p5 corre-a **uma vez**, quando o sketch arranca.\n- `createCanvas(400, 300)` cria a **tela** (o *canvas*) onde vais desenhar: 400 píxeis de largura e 300 de altura.\n- `background(220)` pinta a tela toda de cinzento claro.\n\nCarrega em **▶ Experimentar** por baixo do código para o veres a funcionar. Nos exercícios, carregas em **▶ Executar** (ou **Ctrl+Enter**).\n\n> 💡 Cada instrução termina com `;` e o que está entre `{` e `}` pertence à função. Maiúsculas e minúsculas contam: `createCanvas` funciona, `createcanvas` dá erro.\n\n## Tons de cinzento\n\nCom um só número, de **0** a **255**, escolhes um cinzento:\n\n| Valor | Cor |\n|---|---|\n| `background(0)` | preto |\n| `background(127)` | cinzento médio |\n| `background(220)` | cinzento claro |\n| `background(255)` | branco |\n\n## As coordenadas\n\nCada ponto da tela tem uma posição **(x, y)**:\n\n- o **x** conta da esquerda para a direita;\n- o **y** conta **de cima para baixo** (ao contrário da Matemática!);\n- o ponto **(0, 0)** é o canto superior esquerdo.\n\nNuma tela de 400 × 300, o canto inferior direito é (400, 300) e o centro é (200, 150). Experimenta este exemplo, que marca alguns pontos:\n\n```js\nfunction setup() {\n  createCanvas(400, 300);\n  background(240);\n  strokeWeight(12);\n  point(0, 0);       // canto superior esquerdo (só se vê um quarto do ponto)\n  point(200, 150);   // centro\n  point(380, 280);   // perto do canto inferior direito\n  strokeWeight(2);\n  line(0, 150, 400, 150);  // linha horizontal a meio\n  line(200, 0, 200, 300);  // linha vertical a meio\n}\n```\n\n## Pontos e linhas\n\n| Função | O que desenha |\n|---|---|\n| `point(x, y)` | um ponto |\n| `line(x1, y1, x2, y2)` | uma linha de (x1, y1) até (x2, y2) |\n| `strokeWeight(n)` | a grossura dos pontos e linhas que vêm a seguir (em píxeis) |\n\n## Comentários\n\nTudo o que vem depois de `//` até ao fim da linha é um **comentário**: o computador ignora-o. Serve para explicares o teu código (a ti próprio, daqui a uma semana!).\n\n## Quando algo corre mal\n\nSe houver um erro, a **consola** por baixo do resultado diz-te em que linha está e dá uma pista. Os erros mais comuns no início:\n\n- esquecer um parêntese ou uma chaveta: `createCanvas(400, 300;`\n- escrever mal um nome: `Background(220)` em vez de `background(220)`;\n- esquecer a vírgula entre os números: `point(10 20)`.\n\n> 🎯 Nos exercícios, o botão **✓ Verificar** corre verificações automáticas ao teu sketch: vês logo o que já está certo e o que falta.\n",
+  "exercises": [
+   {
+    "id": "primeira-tela",
+    "title": "A primeira tela",
+    "difficulty": 1,
+    "statement": "Cria um sketch com:\n\n1. uma tela com **400** píxeis de largura e **300** de altura;\n2. o fundo pintado de cinzento claro, com o valor **220**.\n\nCarrega em **▶ Executar** para veres o resultado e depois em **✓ Verificar**.",
+    "starter": "function setup() {\n  // escreve aqui o teu código\n\n}\n",
+    "hint": "Dentro do `setup()`, escreve `createCanvas(400, 300);` e na linha seguinte `background(220);`.",
+    "tests": [
+     {
+      "name": "A tela tem 400 × 300",
+      "expr": "verifica.tela()",
+      "expected": [
+       400,
+       300
+      ]
+     },
+     {
+      "name": "O fundo é cinzento claro (220)",
+      "expr": "verifica.cor(200, 150)",
+      "expected": "#dcdcdc"
+     },
+     {
+      "name": "O sketch corre sem erros",
+      "expr": "verifica.erro()",
+      "expected": null
+     }
+    ]
+   },
+   {
+    "id": "linhas-cruzadas",
+    "title": "Linhas cruzadas",
+    "difficulty": 1,
+    "statement": "Numa tela de **400 × 400** com fundo **branco** (255), desenha as duas diagonais:\n\n- uma linha do canto superior esquerdo ao canto inferior direito;\n- outra do canto superior direito ao canto inferior esquerdo.\n\nJuntas, fazem um grande **X**.",
+    "starter": "function setup() {\n  createCanvas(400, 400);\n\n}\n",
+    "hint": "O canto superior direito é `(400, 0)` e o inferior esquerdo é `(0, 400)`. A primeira linha é `line(0, 0, 400, 400);`.",
+    "tests": [
+     {
+      "name": "A tela tem 400 × 400",
+      "expr": "verifica.tela()",
+      "expected": [
+       400,
+       400
+      ]
+     },
+     {
+      "name": "O fundo é branco",
+      "expr": "verifica.cor(10, 200)",
+      "expected": "#ffffff"
+     },
+     {
+      "name": "Há exatamente duas linhas",
+      "expr": "verifica.chamadas(\"line\")",
+      "expected": 2
+     },
+     {
+      "name": "As linhas ligam os cantos opostos",
+      "expr": "verifica.argumentos(\"line\").map(a => [a[0] + \",\" + a[1], a[2] + \",\" + a[3]].sort().join(\" \")).sort()",
+      "expected": [
+       "0,0 400,400",
+       "0,400 400,0"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "ponto-central",
+    "title": "Um ponto no centro",
+    "difficulty": 1,
+    "statement": "Faz um \"planeta\" solitário no espaço:\n\n1. tela de **300 × 300** com fundo **preto** (0);\n2. a cor do traço branca: `stroke(255);`\n3. traço com **20** píxeis de grossura;\n4. um **ponto** exatamente no **centro** da tela.",
+    "starter": "function setup() {\n  createCanvas(300, 300);\n  background(0);\n  stroke(255);\n\n}\n",
+    "hint": "O centro de uma tela de 300 × 300 é `(150, 150)`. Usa `strokeWeight(20);` **antes** de `point(150, 150);`.",
+    "tests": [
+     {
+      "name": "Há um ponto no centro",
+      "expr": "verifica.argumentos(\"point\")",
+      "expected": [
+       [
+        150,
+        150
+       ]
+      ]
+     },
+     {
+      "name": "O traço tem grossura 20",
+      "expr": "verifica.argumentos(\"strokeWeight\")",
+      "expected": [
+       [
+        20
+       ]
+      ]
+     },
+     {
+      "name": "O centro está branco",
+      "expr": "verifica.cor(150, 150)",
+      "expected": "#ffffff"
+     },
+     {
+      "name": "O resto da tela é preto",
+      "expr": "verifica.cor(20, 20)",
+      "expected": "#000000"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "formas",
+  "track": "Desenho",
+  "title": "Formas básicas",
+  "icon": "🔷",
+  "summary": "Retângulos, círculos, elipses e triângulos — e porque é que a ordem conta.",
+  "lesson": "# Formas básicas\n\nCom meia dúzia de funções desenhas quase tudo. Em todas, os números entre parênteses (os **argumentos**) dizem **onde** fica a forma e **que tamanho** tem.\n\n## Retângulos e quadrados\n\n```\nrect(x, y, largura, altura)\nsquare(x, y, lado)\n```\n\nO ponto `(x, y)` é o **canto superior esquerdo** do retângulo.\n\n## Círculos e elipses\n\n```\ncircle(x, y, diâmetro)\nellipse(x, y, largura, altura)\n```\n\nAqui o ponto `(x, y)` é o **centro**. Atenção: o terceiro número do `circle` é o **diâmetro**, não o raio.\n\n## Triângulos e quadriláteros\n\n```\ntriangle(x1, y1, x2, y2, x3, y3)\nquad(x1, y1, x2, y2, x3, y3, x4, y4)\n```\n\nDás as coordenadas de cada vértice (canto), uma a seguir à outra.\n\n## Tudo junto\n\n```js\nfunction setup() {\n  createCanvas(400, 300);\n  background(230);\n  rect(30, 40, 120, 80);           // retângulo\n  square(180, 40, 80);             // quadrado\n  circle(330, 80, 90);             // círculo\n  ellipse(90, 220, 140, 70);       // elipse\n  triangle(200, 270, 250, 170, 300, 270);  // triângulo\n}\n```\n\n## A ordem conta\n\nO p5 desenha como um pintor: cada forma fica **por cima** das que foram desenhadas antes. Se desenhares um círculo pequeno e depois um grande no mesmo sítio, o grande tapa o pequeno.\n\n```js\nfunction setup() {\n  createCanvas(300, 150);\n  background(230);\n  // Esquerda: primeiro o grande, depois o pequeno (vê-se os dois)\n  circle(80, 75, 100);\n  circle(80, 75, 40);\n  // Direita: primeiro o pequeno, depois o grande (o pequeno fica tapado)\n  circle(220, 75, 40);\n  circle(220, 75, 100);\n}\n```\n\n## Mudar a referência: rectMode e ellipseMode\n\nSe preferires que o `rect` seja posicionado pelo **centro**, escreve `rectMode(CENTER);` antes de o desenhar. Também existe `ellipseMode(CORNER)` para posicionar elipses pelo canto. Por agora, os valores por omissão chegam.\n\n> 💡 Faz um esboço em papel quadriculado antes de programar: é muito mais fácil descobrir as coordenadas!\n",
+  "exercises": [
+   {
+    "id": "boneco-de-neve",
+    "title": "Boneco de neve",
+    "difficulty": 1,
+    "statement": "Numa tela de **400 × 400**, desenha um boneco de neve com **três círculos**, todos com o centro em **x = 200**:\n\n| Parte | Centro (y) | Diâmetro |\n|---|---|---|\n| base | 300 | 160 |\n| corpo | 190 | 110 |\n| cabeça | 105 | 70 |",
+    "starter": "function setup() {\n  createCanvas(400, 400);\n  background(200, 230, 255);\n  // a base:\n  circle(200, 300, 160);\n\n}\n",
+    "hint": "Já tens a base. Falta `circle(200, 190, 110);` para o corpo e outro `circle` para a cabeça.",
+    "tests": [
+     {
+      "name": "Há três círculos",
+      "expr": "verifica.formas(\"circle\", \"ellipse\").length",
+      "expected": 3
+     },
+     {
+      "name": "Estão todos centrados em x = 200",
+      "expr": "verifica.formas(\"circle\", \"ellipse\").every(f => f.a[0] === 200)",
+      "expected": true
+     },
+     {
+      "name": "As alturas estão certas",
+      "expr": "verifica.formas(\"circle\", \"ellipse\").map(f => f.a[1]).sort((a, b) => a - b)",
+      "expected": [
+       105,
+       190,
+       300
+      ]
+     },
+     {
+      "name": "Os tamanhos estão certos",
+      "expr": "verifica.formas(\"circle\", \"ellipse\").map(f => f.a[2]).sort((a, b) => a - b)",
+      "expected": [
+       70,
+       110,
+       160
+      ]
+     }
+    ]
+   },
+   {
+    "id": "casa",
+    "title": "Uma casa",
+    "difficulty": 2,
+    "statement": "Desenha uma casa numa tela de **400 × 400**:\n\n- **paredes**: um retângulo com o canto superior esquerdo em (100, 200), **200** de largura e **150** de altura;\n- **telhado**: um triângulo com os vértices em (100, 200), (300, 200) e (200, 100);\n- **porta**: um retângulo em (180, 280), com **40** de largura e **70** de altura.\n\nPensa na ordem: a porta tem de ficar **por cima** das paredes.",
+    "starter": "function setup() {\n  createCanvas(400, 400);\n  background(170, 220, 255);\n\n}\n",
+    "hint": "Paredes: `rect(100, 200, 200, 150);` — depois o `triangle(...)` com os três vértices e, no fim, a porta com outro `rect`.",
+    "tests": [
+     {
+      "name": "As paredes estão certas",
+      "expr": "verifica.argumentos(\"rect\").some(a => a.join() === \"100,200,200,150\")",
+      "expected": true
+     },
+     {
+      "name": "O telhado está certo",
+      "expr": "verifica.argumentos(\"triangle\").map(a => [a.slice(0, 2), a.slice(2, 4), a.slice(4, 6)].map(p => p.join()).sort().join(\" \"))",
+      "expected": [
+       "100,200 200,100 300,200"
+      ]
+     },
+     {
+      "name": "A porta está certa",
+      "expr": "verifica.argumentos(\"rect\").some(a => a.join() === \"180,280,40,70\")",
+      "expected": true
+     },
+     {
+      "name": "A porta fica por cima das paredes",
+      "expr": "(() => { const r = verifica.argumentos(\"rect\").map(a => a.join()); return r.indexOf(\"180,280,40,70\") > r.indexOf(\"100,200,200,150\"); })()",
+      "expected": true
+     }
+    ]
+   },
+   {
+    "id": "alvo",
+    "title": "O alvo",
+    "difficulty": 2,
+    "statement": "Desenha um alvo com **três círculos** concêntricos (com o mesmo centro), em **(200, 200)**, numa tela de **400 × 400**. Os diâmetros são **300**, **200** e **100**.\n\nAtenção à ordem: os três círculos têm de se ver todos!",
+    "starter": "function setup() {\n  createCanvas(400, 400);\n  background(240);\n  circle(200, 200, 100);\n  circle(200, 200, 200);\n  circle(200, 200, 300);\n}\n",
+    "hint": "O último círculo a ser desenhado fica por cima. Começa pelo **maior**.",
+    "tests": [
+     {
+      "name": "Há três círculos com centro em (200, 200)",
+      "expr": "verifica.formas(\"circle\", \"ellipse\").filter(f => f.a[0] === 200 && f.a[1] === 200).length",
+      "expected": 3
+     },
+     {
+      "name": "São desenhados do maior para o menor",
+      "expr": "verifica.formas(\"circle\", \"ellipse\").map(f => f.a[2])",
+      "expected": [
+       300,
+       200,
+       100
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cor",
+  "track": "Desenho",
+  "title": "Cor",
+  "icon": "🎨",
+  "summary": "RGB, preenchimento e contorno, transparência.",
+  "lesson": "# Cor\n\nAté agora tudo foi branco, preto ou cinzento. Está na hora de dar cor aos desenhos!\n\n## O modelo RGB\n\nOs ecrãs formam todas as cores misturando luz **vermelha** (*Red*), **verde** (*Green*) e **azul** (*Blue*). Cada uma vai de **0** (nada) a **255** (o máximo):\n\n| Código | Cor |\n|---|---|\n| `(255, 0, 0)` | vermelho |\n| `(0, 255, 0)` | verde |\n| `(0, 0, 255)` | azul |\n| `(255, 255, 0)` | amarelo (vermelho + verde) |\n| `(255, 255, 255)` | branco (tudo no máximo) |\n| `(0, 0, 0)` | preto |\n\n> 💡 Com luz, misturar cores dá cores mais **claras** — ao contrário das tintas!\n\n## Preenchimento e contorno\n\nCada forma tem duas cores:\n\n| Função | O que muda |\n|---|---|\n| `fill(r, g, b)` | a cor de **dentro** das formas |\n| `stroke(r, g, b)` | a cor do **contorno** (e das linhas e pontos) |\n| `noFill()` | formas sem preenchimento (só contorno) |\n| `noStroke()` | formas sem contorno |\n| `strokeWeight(n)` | a grossura do contorno |\n\nEstas funções funcionam como um **pincel**: a cor escolhida fica ativa para todas as formas que vierem **depois**, até a mudares outra vez.\n\n```js\nfunction setup() {\n  createCanvas(400, 200);\n  background(250);\n  strokeWeight(4);\n  fill(255, 200, 0);\n  stroke(200, 100, 0);\n  circle(80, 100, 100);    // amarelo com contorno laranja\n  circle(200, 100, 100);   // igual: o pincel não mudou\n  noStroke();\n  fill(0, 150, 255);\n  circle(320, 100, 100);   // azul, sem contorno\n}\n```\n\nTambém podes usar um só número (cinzentos), nomes de cores em inglês (`fill(\"orange\")`) ou códigos hexadecimais (`fill(\"#ff8800\")`), como no CSS.\n\n## Transparência\n\nUm **quarto número** dá a opacidade (*alpha*): **0** é invisível e **255** é opaco.\n\n```js\nfunction setup() {\n  createCanvas(300, 200);\n  background(255);\n  noStroke();\n  fill(255, 0, 0, 120);\n  circle(120, 100, 140);\n  fill(0, 0, 255, 120);\n  circle(180, 100, 140);   // onde se sobrepõem, fica roxo\n}\n```\n",
+  "exercises": [
+   {
+    "id": "semaforo",
+    "title": "Semáforo",
+    "difficulty": 1,
+    "statement": "Numa tela de **200 × 400** com fundo cinzento escuro (**40**), desenha as três luzes de um semáforo: três círculos com **100** de diâmetro, todos em **x = 100**:\n\n| Luz | y | Cor (RGB) |\n|---|---|---|\n| vermelha | 80 | 255, 0, 0 |\n| amarela | 200 | 255, 200, 0 |\n| verde | 320 | 0, 200, 0 |",
+    "starter": "function setup() {\n  createCanvas(200, 400);\n  background(40);\n  circle(100, 80, 100);\n  circle(100, 200, 100);\n  circle(100, 320, 100);\n}\n",
+    "hint": "Antes de cada `circle`, escolhe a cor com `fill(...)`. Por exemplo, `fill(255, 0, 0);` antes do primeiro.",
+    "tests": [
+     {
+      "name": "A luz de cima é vermelha",
+      "expr": "verifica.cor(100, 80)",
+      "expected": "#ff0000"
+     },
+     {
+      "name": "A luz do meio é amarela",
+      "expr": "verifica.cor(100, 200)",
+      "expected": "#ffc800"
+     },
+     {
+      "name": "A luz de baixo é verde",
+      "expr": "verifica.cor(100, 320)",
+      "expected": "#00c800"
+     },
+     {
+      "name": "O fundo é cinzento escuro",
+      "expr": "verifica.cor(10, 10)",
+      "expected": "#282828"
+     }
+    ]
+   },
+   {
+    "id": "bandeira",
+    "title": "Bandeira de Portugal",
+    "difficulty": 2,
+    "statement": "Desenha uma versão simplificada da bandeira de Portugal numa tela de **600 × 400**, **sem contornos**:\n\n1. um retângulo **verde** (0, 102, 0) do lado esquerdo: começa em (0, 0) e tem **240** de largura (2/5 da bandeira) e a altura toda;\n2. um retângulo **vermelho** (255, 0, 0) no resto da bandeira: começa em x = 240;\n3. um círculo **amarelo** (255, 255, 0) com centro em **(240, 200)** e **160** de diâmetro, por cima da divisão (é o lugar da esfera armilar).",
+    "starter": "function setup() {\n  createCanvas(600, 400);\n\n}\n",
+    "hint": "`noStroke();` tira os contornos. Depois: `fill(0, 102, 0); rect(0, 0, 240, 400);`, a seguir o vermelho com `rect(240, 0, 360, 400);` e, por último, o círculo.",
+    "tests": [
+     {
+      "name": "O lado esquerdo é verde",
+      "expr": "verifica.cor(100, 200)",
+      "expected": "#006600"
+     },
+     {
+      "name": "O lado direito é vermelho",
+      "expr": "verifica.cor(500, 200)",
+      "expected": "#ff0000"
+     },
+     {
+      "name": "O círculo amarelo está na divisão",
+      "expr": "verifica.cor(240, 200)",
+      "expected": "#ffff00"
+     },
+     {
+      "name": "O círculo não tem contorno",
+      "expr": "verifica.formas(\"circle\", \"ellipse\").length > 0 && verifica.formas(\"circle\", \"ellipse\").every(f => f.stroke === null)",
+      "expected": true
+     }
+    ]
+   },
+   {
+    "id": "transparencia",
+    "title": "Luzes que se misturam",
+    "difficulty": 2,
+    "statement": "Numa tela de **400 × 400** com fundo **preto**, desenha três círculos **sem contorno**, com **200** de diâmetro e transparência **120**, por esta ordem:\n\n1. vermelho (255, 0, 0) com centro em (150, 150);\n2. verde (0, 255, 0) com centro em (250, 150);\n3. azul (0, 0, 255) com centro em (200, 240).\n\nRepara nas cores que aparecem onde os círculos se sobrepõem.",
+    "starter": "function setup() {\n  createCanvas(400, 400);\n  background(0);\n\n}\n",
+    "hint": "A transparência é o quarto número: `fill(255, 0, 0, 120);`. Não te esqueças do `noStroke();`.",
+    "tests": [
+     {
+      "name": "As cores e a transparência estão certas",
+      "expr": "verifica.formas(\"circle\", \"ellipse\").map(f => f.fill)",
+      "expected": [
+       "#ff000078",
+       "#00ff0078",
+       "#0000ff78"
+      ]
+     },
+     {
+      "name": "As posições estão certas",
+      "expr": "verifica.formas(\"circle\", \"ellipse\").map(f => f.a.slice(0, 3).join())",
+      "expected": [
+       "150,150,200",
+       "250,150,200",
+       "200,240,200"
+      ]
+     },
+     {
+      "name": "Não há contornos",
+      "expr": "verifica.formas(\"circle\", \"ellipse\").every(f => f.stroke === null)",
+      "expected": true
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "variaveis",
+  "track": "Desenho",
+  "title": "Variáveis",
+  "icon": "📦",
+  "summary": "Guardar valores com let, fazer contas, width e height.",
+  "lesson": "# Variáveis\n\nImagina que desenhaste um boneco com 20 formas e agora queres mudá-lo de sítio. Vais alterar 40 números à mão? Com **variáveis**, mudas um só valor e o desenho todo acompanha.\n\n## Criar e usar uma variável\n\nUma variável é uma \"caixa\" com um **nome** onde guardas um **valor**:\n\n```js\nlet x = 200;\nlet y = 150;\n\nfunction setup() {\n  createCanvas(400, 300);\n  background(230);\n  circle(x, y, 80);          // círculo em (200, 150)\n  circle(x + 100, y, 40);    // 100 píxeis mais à direita\n}\n```\n\n- `let x = 200;` cria a variável `x` com o valor 200;\n- depois, onde escreveres `x`, o p5 usa o valor que lá está.\n\nPara mudar o valor de uma variável que já existe, escreves só `x = 50;` (sem `let`).\n\n## Contas\n\n| Operação | Símbolo | Exemplo |\n|---|---|---|\n| somar | `+` | `x + 10` |\n| subtrair | `-` | `y - 30` |\n| multiplicar | `*` | `tamanho * 2` |\n| dividir | `/` | `width / 2` |\n\n## Nomes de variáveis\n\n- Começam por uma letra e não têm espaços nem acentos: `tamanho`, `posX`, `corFundo`.\n- Maiúsculas e minúsculas são diferentes: `posX` e `posx` são duas variáveis!\n- Escolhe nomes que digam o que a variável guarda.\n\n## width e height\n\nO p5 tem variáveis já prontas. Duas das mais úteis: **`width`** (a largura da tela) e **`height`** (a altura). Assim, o centro é sempre `(width / 2, height / 2)`, seja qual for o tamanho da tela:\n\n```js\nfunction setup() {\n  createCanvas(300, 200);\n  background(30);\n  fill(255, 100, 150);\n  circle(width / 2, height / 2, 100);   // sempre no centro\n}\n```\n\n## Ver o valor de uma variável\n\nPara espreitar o que está dentro de uma variável, usa `print(x);` (ou `console.log(x);`). O valor aparece na **consola**, por baixo do resultado.\n\n> 💡 Uma variável criada **fora** das funções (no topo do sketch) pode ser usada em todo o lado. Uma criada **dentro** de uma função só existe lá dentro.\n",
+  "exercises": [
+   {
+    "id": "centro-sempre",
+    "title": "Sempre no centro",
+    "difficulty": 1,
+    "statement": "A tela tem **500 × 300**. Desenha um círculo com **100** de diâmetro **no centro** da tela.\n\nNão escrevas os números do centro à mão: usa **`width`** e **`height`**. Assim, se mudares o tamanho da tela, o círculo continua no centro.",
+    "starter": "function setup() {\n  createCanvas(500, 300);\n  background(220);\n  // desenha o círculo no centro, usando width e height\n\n}\n",
+    "hint": "O centro é `(width / 2, height / 2)`: escreve `circle(width / 2, height / 2, 100);`.",
+    "tests": [
+     {
+      "name": "O círculo está no centro",
+      "expr": "verifica.argumentos(\"circle\")",
+      "expected": [
+       [
+        250,
+        150,
+        100
+       ]
+      ]
+     },
+     {
+      "name": "Usaste width / 2",
+      "expr": "verifica.noCodigo(\"width\\\\s*/\\\\s*2\")",
+      "expected": true
+     },
+     {
+      "name": "Usaste height / 2",
+      "expr": "verifica.noCodigo(\"height\\\\s*/\\\\s*2\")",
+      "expected": true
+     }
+    ]
+   },
+   {
+    "id": "tamanho-variavel",
+    "title": "Um tamanho para todos",
+    "difficulty": 1,
+    "statement": "1. No topo do sketch, cria uma variável **`tamanho`** com o valor **80**.\n2. Desenha um **quadrado** em (50, 100) e um **círculo** com centro em (250, 140). O lado do quadrado e o diâmetro do círculo têm de ser dados pela variável `tamanho` (não escrevas 80 dentro do `square` nem do `circle`).\n\nExperimenta depois mudar o valor de `tamanho`: as duas formas mudam juntas!",
+    "starter": "// cria aqui a variável tamanho\n\nfunction setup() {\n  createCanvas(400, 300);\n  background(240);\n\n}\n",
+    "hint": "`let tamanho = 80;` no topo; depois `square(50, 100, tamanho);` e `circle(250, 140, tamanho);`.",
+    "tests": [
+     {
+      "name": "A variável tamanho vale 80",
+      "expr": "verifica.variavel(\"tamanho\")",
+      "expected": 80
+     },
+     {
+      "name": "O quadrado está certo",
+      "expr": "verifica.argumentos(\"square\")",
+      "expected": [
+       [
+        50,
+        100,
+        80
+       ]
+      ]
+     },
+     {
+      "name": "O círculo está certo",
+      "expr": "verifica.argumentos(\"circle\")",
+      "expected": [
+       [
+        250,
+        140,
+        80
+       ]
+      ]
+     },
+     {
+      "name": "O quadrado e o círculo usam a variável",
+      "expr": "verifica.noCodigo(\"square\\\\([^)]*tamanho\") && verifica.noCodigo(\"circle\\\\([^)]*tamanho\")",
+      "expected": true
+     }
+    ]
+   },
+   {
+    "id": "rosto",
+    "title": "Um rosto que muda de sítio",
+    "difficulty": 2,
+    "statement": "O rosto do código inicial foi desenhado com números fixos. Torna-o fácil de mudar de sítio:\n\n1. em cada forma, troca os números pelas variáveis **`x`** e **`y`** (o centro da cabeça), com contas: por exemplo, o olho esquerdo fica em `x - 40, y - 30`;\n2. no fim, muda os valores para **`x = 150`** e **`y = 220`**. O rosto todo tem de se mudar para lá.",
+    "starter": "let x = 200;\nlet y = 200;\n\nfunction setup() {\n  createCanvas(400, 400);\n  background(255, 240, 200);\n  circle(200, 200, 200);          // cabeça\n  circle(160, 170, 30);           // olho esquerdo\n  circle(240, 170, 30);           // olho direito\n  line(160, 250, 240, 250);       // boca\n}\n",
+    "hint": "A cabeça é `circle(x, y, 200);`. O olho direito está 40 para a direita e 30 para cima do centro: `circle(x + 40, y - 30, 30);`. A boca vai de `x - 40, y + 50` até `x + 40, y + 50`.",
+    "tests": [
+     {
+      "name": "x vale 150 e y vale 220",
+      "expr": "[verifica.variavel(\"x\"), verifica.variavel(\"y\")]",
+      "expected": [
+       150,
+       220
+      ]
+     },
+     {
+      "name": "A cabeça e os olhos acompanharam",
+      "expr": "verifica.argumentos(\"circle\")",
+      "expected": [
+       [
+        150,
+        220,
+        200
+       ],
+       [
+        110,
+        190,
+        30
+       ],
+       [
+        190,
+        190,
+        30
+       ]
+      ]
+     },
+     {
+      "name": "A boca acompanhou",
+      "expr": "verifica.argumentos(\"line\")",
+      "expected": [
+       [
+        110,
+        270,
+        190,
+        270
+       ]
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "draw",
+  "track": "Animação",
+  "title": "O ciclo draw()",
+  "icon": "🎞️",
+  "summary": "Como uma animação funciona: frames, frameCount e variáveis que mudam.",
+  "lesson": "# O ciclo draw()\n\nUm desenho animado é uma sequência de imagens paradas (**frames**) mostradas muito depressa. O p5 faz o mesmo: além do `setup()`, podes escrever uma função **`draw()`**, que o p5 corre **sem parar**, cerca de **60 vezes por segundo**.\n\n| Função | Quando corre |\n|---|---|\n| `setup()` | uma vez, no início |\n| `draw()` | a seguir ao `setup()`, uma vez por frame, até parares o sketch |\n\n## Movimento: uma variável que muda\n\nPara algo se mexer, a sua posição tem de ser uma **variável** que muda um bocadinho em cada frame:\n\n```js\nlet x = 0;\n\nfunction setup() {\n  createCanvas(400, 200);\n}\n\nfunction draw() {\n  background(220);\n  circle(x, 100, 40);\n  x = x + 2;        // em cada frame, a bola anda 2 píxeis para a direita\n}\n```\n\n> 💡 `x = x + 2` lê-se \"o novo x é o x antigo mais 2\". Há formas mais curtas de escrever o mesmo: `x += 2`. E para somar 1: `x++`.\n\n## Porque é que o background() está no draw()?\n\nExperimenta tirar o `background(220);` do `draw()` (e pô-lo no `setup()`): a bola deixa um **rasto**, porque cada frame é pintado por cima do anterior, sem apagar. Às vezes é mesmo isso que queremos (para fazer um \"pincel\", por exemplo).\n\n## frameCount\n\nO p5 conta os frames por ti na variável **`frameCount`**: vale 1 no primeiro frame, 2 no segundo, e assim por diante. É uma forma rápida de animar sem criar variáveis:\n\n```js\nfunction setup() {\n  createCanvas(300, 300);\n}\n\nfunction draw() {\n  background(30);\n  fill(255, 180, 0);\n  circle(150, 150, frameCount % 300);   // cresce e volta ao início\n}\n```\n\n(O `%` é o **resto da divisão**: `frameCount % 300` vai de 0 a 299 e recomeça.)\n\n## Velocidade\n\n- `frameRate(30);` no `setup()` muda o número de frames por segundo.\n- Para parar o `draw()`, usa `noLoop();` (e `loop();` para recomeçar).\n",
+  "exercises": [
+   {
+    "id": "bola-a-andar",
+    "title": "A bola anda",
+    "difficulty": 1,
+    "statement": "Faz uma bola andar para a direita:\n\n1. no topo, uma variável **`x`** que começa em **0**;\n2. no `draw()`: pinta o fundo (`background(220)`), desenha um círculo em **(x, 100)** com **40** de diâmetro e, a seguir, soma **3** ao `x`.\n\nAssim, a bola anda 3 píxeis por frame.",
+    "starter": "let x = 0;\n\nfunction setup() {\n  createCanvas(400, 200);\n}\n\nfunction draw() {\n  background(220);\n\n}\n",
+    "hint": "Dentro do `draw()`, depois do `background`: `circle(x, 100, 40);` e `x = x + 3;`.",
+    "tests": [
+     {
+      "name": "Há um círculo com 40 de diâmetro em y = 100",
+      "expr": "verifica.argumentos(\"circle\").map(a => [a[1], a[2]])",
+      "expected": [
+       [
+        100,
+        40
+       ]
+      ]
+     },
+     {
+      "name": "A bola anda 3 píxeis por frame",
+      "expr": "(() => { const a = verifica.argumentos(\"circle\")[0][0]; const b = verifica.avanca(10).argumentos(\"circle\")[0][0]; return b - a; })()",
+      "expected": 30
+     },
+     {
+      "name": "O fundo é pintado em cada frame",
+      "expr": "verifica.avanca(2).chamadas(\"background\")",
+      "expected": 1
+     }
+    ]
+   },
+   {
+    "id": "cresce",
+    "title": "Um círculo que cresce",
+    "difficulty": 1,
+    "statement": "Numa tela de **400 × 400**, desenha no `draw()` um círculo no **centro** cujo diâmetro é igual a **`frameCount`**. Pinta o fundo em cada frame.\n\nNo frame 50, por exemplo, o círculo tem 50 de diâmetro.",
+    "starter": "function setup() {\n  createCanvas(400, 400);\n}\n\nfunction draw() {\n  background(20, 30, 60);\n  fill(255, 200, 0);\n  circle(200, 200, 100);\n}\n",
+    "hint": "Troca o `100` por `frameCount`.",
+    "tests": [
+     {
+      "name": "No frame 50, o diâmetro é 50",
+      "expr": "verifica.avanca(49).argumentos(\"circle\")",
+      "expected": [
+       [
+        200,
+        200,
+        50
+       ]
+      ]
+     },
+     {
+      "name": "No frame 120, o diâmetro é 120",
+      "expr": "verifica.avanca(119).argumentos(\"circle\")",
+      "expected": [
+       [
+        200,
+        200,
+        120
+       ]
+      ]
+     },
+     {
+      "name": "Usaste frameCount",
+      "expr": "verifica.noCodigo(\"frameCount\")",
+      "expected": true
+     }
+    ]
+   },
+   {
+    "id": "rasto",
+    "title": "Deixa rasto",
+    "difficulty": 2,
+    "statement": "Numa tela de **400 × 400**:\n\n1. pinta o fundo de **preto** só **uma vez**, no `setup()`;\n2. no `draw()`, desenha um círculo **branco** sem contorno, com **20** de diâmetro, em `(frameCount * 4, 200)`.\n\nComo o fundo não é apagado em cada frame, o círculo deixa um **rasto** branco.",
+    "starter": "function setup() {\n  createCanvas(400, 400);\n}\n\nfunction draw() {\n  background(0);\n  noStroke();\n  fill(255);\n  circle(frameCount * 4, 200, 20);\n}\n",
+    "hint": "Passa o `background(0);` do `draw()` para o `setup()`.",
+    "tests": [
+     {
+      "name": "O fundo é pintado no setup()",
+      "expr": "verifica.noSetup(\"background\") >= 1",
+      "expected": true
+     },
+     {
+      "name": "O fundo não é apagado no draw()",
+      "expr": "verifica.avanca(2).chamadas(\"background\")",
+      "expected": 0
+     },
+     {
+      "name": "Fica um rasto branco",
+      "expr": "verifica.avanca(30).cor(40, 200)",
+      "expected": "#ffffff"
+     },
+     {
+      "name": "Fora do caminho continua preto",
+      "expr": "verifica.avanca(30).cor(40, 100)",
+      "expected": "#000000"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "condicoes",
+  "track": "Animação",
+  "title": "Condições",
+  "icon": "🔀",
+  "summary": "if e else para tomar decisões — e uma bola que ressalta nas paredes.",
+  "lesson": "# Condições\n\nUma bola que anda para a direita acaba por sair da tela e nunca mais volta. Para a fazer voltar, o programa tem de **tomar decisões**: \"**se** a bola passou da borda, **então** faz isto\". É para isso que serve o **`if`**.\n\n## if\n\n```js\nif (x > width) {\n  x = 0;\n}\n```\n\nO código entre `{` e `}` só corre **se** a condição entre parênteses for verdadeira.\n\n## Comparações\n\n| Escreves | Significa |\n|---|---|\n| `a > b` | a maior do que b |\n| `a < b` | a menor do que b |\n| `a >= b` | a maior ou igual a b |\n| `a <= b` | a menor ou igual a b |\n| `a === b` | a igual a b |\n| `a !== b` | a diferente de b |\n\n> ⚠️ `=` **guarda** um valor numa variável; `===` **compara** dois valores. Trocá-los é um dos erros mais comuns!\n\n## else\n\nCom `else` (\"senão\") escolhes o que fazer quando a condição é falsa:\n\n```js\nif (x < width / 2) {\n  background(0, 0, 100);   // metade esquerda: azul\n} else {\n  background(200, 0, 0);   // metade direita: vermelho\n}\n```\n\n## Juntar condições\n\n- `&&` — **e**: as duas condições têm de ser verdadeiras;\n- `||` — **ou**: basta uma ser verdadeira.\n\n```js\nif (x < 0 || x > width) {\n  // a bola saiu por um dos lados\n}\n```\n\n## Velocidade e ressalto\n\nPara uma bola ressaltar, guardamos a **velocidade** numa variável. Quando bate numa parede, a velocidade troca de sinal (de `+3` passa a `-3`): a bola passa a andar no sentido contrário.\n\n```js\nlet x = 100;\nlet vx = 3;\n\nfunction setup() {\n  createCanvas(400, 150);\n}\n\nfunction draw() {\n  background(230);\n  circle(x, 75, 40);\n  x = x + vx;\n  if (x > width || x < 0) {\n    vx = -vx;     // troca o sentido\n  }\n}\n```\n",
+  "exercises": [
+   {
+    "id": "volta-ao-inicio",
+    "title": "Volta ao início",
+    "difficulty": 1,
+    "statement": "A bola do código inicial anda para a direita e sai da tela para sempre. Acrescenta uma condição para que, quando **`x` passar da largura da tela** (`width`), volte a **0**.",
+    "starter": "let x = 0;\n\nfunction setup() {\n  createCanvas(400, 200);\n}\n\nfunction draw() {\n  background(220);\n  circle(x, 100, 40);\n  x = x + 5;\n}\n",
+    "hint": "No fim do `draw()`: `if (x > width) { x = 0; }`.",
+    "tests": [
+     {
+      "name": "A bola volta ao início e nunca se afasta da tela",
+      "expr": "(() => { let max = 0, voltou = false, antes = verifica.variavel(\"x\"); for (let i = 0; i < 200; i++) { const x = verifica.avanca().variavel(\"x\"); max = Math.max(max, x); if (x < antes) voltou = true; antes = x; } return [voltou, max <= 405]; })()",
+      "expected": [
+       true,
+       true
+      ]
+     },
+     {
+      "name": "A bola continua em y = 100",
+      "expr": "verifica.avanca(100).argumentos(\"circle\").map(a => a[1])",
+      "expected": [
+       100
+      ]
+     }
+    ]
+   },
+   {
+    "id": "metade",
+    "title": "Esquerda ou direita",
+    "difficulty": 2,
+    "statement": "A bola anda da esquerda para a direita. Muda a cor do fundo conforme o lado em que ela está:\n\n- se `x` for **menor** do que metade da largura (`width / 2`), o fundo é azul-escuro: **(20, 30, 80)**;\n- senão, o fundo é laranja: **(240, 140, 40)**.",
+    "starter": "let x = 0;\n\nfunction setup() {\n  createCanvas(400, 400);\n}\n\nfunction draw() {\n  background(20, 30, 80);\n  fill(255);\n  circle(x, 200, 50);\n  x = x + 2;\n}\n",
+    "hint": "Troca o `background(...)` por um `if (x < width / 2) { ... } else { ... }` com um `background` em cada parte.",
+    "tests": [
+     {
+      "name": "No início, o fundo é azul-escuro",
+      "expr": "verifica.cor(5, 5)",
+      "expected": "#141e50"
+     },
+     {
+      "name": "Depois de passar o meio, o fundo é laranja",
+      "expr": "verifica.avanca(120).cor(5, 5)",
+      "expected": "#f08c28"
+     },
+     {
+      "name": "Usaste if e else",
+      "expr": "verifica.noCodigo(\"if\\\\s*\\\\(\") && verifica.noCodigo(\"else\")",
+      "expected": true
+     }
+    ]
+   },
+   {
+    "id": "ressalto",
+    "title": "Bola saltitona",
+    "difficulty": 3,
+    "statement": "Faz uma bola com **30** de diâmetro ressaltar nas **quatro paredes** de uma tela de **400 × 300**.\n\n- A bola tem posição `x`, `y` e velocidade `vx` (horizontal) e `vy` (vertical).\n- Em cada frame, soma a velocidade à posição.\n- Quando bate numa parede da esquerda ou da direita, troca o sinal de `vx`; quando bate em cima ou em baixo, troca o sinal de `vy`.\n\nA bola nunca pode sair da tela.",
+    "starter": "let x = 200;\nlet y = 150;\nlet vx = 4;\nlet vy = 3;\n\nfunction setup() {\n  createCanvas(400, 300);\n}\n\nfunction draw() {\n  background(30, 40, 60);\n  fill(255, 120, 80);\n  circle(x, y, 30);\n  x = x + vx;\n  y = y + vy;\n}\n",
+    "hint": "`if (x > width || x < 0) { vx = -vx; }` — e o mesmo para o `y`, com `height` e `vy`.",
+    "tests": [
+     {
+      "name": "A bola nunca sai da tela",
+      "expr": "(() => { for (let i = 0; i < 400; i++) { const [x, y] = verifica.avanca().argumentos(\"circle\")[0]; if (x < -5 || x > 405 || y < -5 || y > 305) return false; } return true; })()",
+      "expected": true
+     },
+     {
+      "name": "Ressalta nas paredes da esquerda e da direita",
+      "expr": "(() => { const xs = []; for (let i = 0; i < 400; i++) xs.push(verifica.avanca().argumentos(\"circle\")[0][0]); return xs.some((x, i) => i > 1 && Math.sign(x - xs[i - 1]) !== Math.sign(xs[i - 1] - xs[i - 2])); })()",
+      "expected": true
+     },
+     {
+      "name": "Ressalta em cima e em baixo",
+      "expr": "(() => { const ys = []; for (let i = 0; i < 400; i++) ys.push(verifica.avanca().argumentos(\"circle\")[0][1]); return ys.some((y, i) => i > 1 && Math.sign(y - ys[i - 1]) !== Math.sign(ys[i - 1] - ys[i - 2])); })()",
+      "expected": true
+     }
+    ],
+    "badge": "ressalto"
+   }
+  ]
+ },
+ {
+  "id": "ciclos",
+  "track": "Animação",
+  "title": "Ciclos for",
+  "icon": "🔁",
+  "summary": "Repetir sem copiar e colar: filas, grelhas e degradés.",
+  "lesson": "# Ciclos for\n\nPara desenhar 10 círculos em fila, podias escrever 10 linhas quase iguais. E para 100? Para 1000? Os **ciclos** repetem código por ti.\n\n## O ciclo for\n\n```js\nfor (let i = 0; i < 10; i++) {\n  circle(20 + i * 40, 100, 30);\n}\n```\n\nLê-se assim: \"começa com `i` a valer 0; **enquanto** `i` for menor do que 10, corre o código entre chavetas e soma 1 ao `i`\".\n\n| Parte | Significa |\n|---|---|\n| `let i = 0` | o contador começa em 0 |\n| `i < 10` | repete enquanto isto for verdade |\n| `i++` | no fim de cada volta, soma 1 ao contador |\n\nEm cada volta, o `i` tem um valor diferente (0, 1, 2, …, 9). Usando-o nas contas, cada círculo fica num sítio diferente:\n\n```js\nfunction setup() {\n  createCanvas(420, 120);\n  background(240);\n  for (let i = 0; i < 10; i++) {\n    fill(i * 25, 100, 255 - i * 25);    // a cor também muda com o i\n    circle(30 + i * 40, 60, 34);\n  }\n}\n```\n\n## Ciclos dentro de ciclos: grelhas\n\nUm ciclo dentro de outro percorre **linhas e colunas**. O de fora escolhe a linha; o de dentro percorre as colunas dessa linha:\n\n```js\nfunction setup() {\n  createCanvas(300, 300);\n  background(255);\n  for (let linha = 0; linha < 6; linha++) {\n    for (let coluna = 0; coluna < 6; coluna++) {\n      fill(coluna * 40, linha * 40, 200);\n      square(coluna * 50, linha * 50, 50);\n    }\n  }\n}\n```\n\n## O resto da divisão: %\n\n`a % b` é o resto da divisão de `a` por `b`. É muito útil para **alternar**: `i % 2` vale 0 nos números pares e 1 nos ímpares.\n\n> ⚠️ Se a condição nunca ficar falsa (por exemplo, `i--` em vez de `i++`), o ciclo nunca acaba: é um **ciclo infinito**. Aqui o sketch é interrompido e a consola avisa-te.\n",
+  "exercises": [
+   {
+    "id": "fila-de-circulos",
+    "title": "Dez em fila",
+    "difficulty": 1,
+    "statement": "Usa um ciclo **`for`** para desenhar **10 círculos** numa tela de **500 × 100**:\n\n- todos com **40** de diâmetro e centro em **y = 50**;\n- o primeiro em **x = 25**, e cada um **50** píxeis à direita do anterior (25, 75, 125, …, 475).",
+    "starter": "function setup() {\n  createCanvas(500, 100);\n  background(250);\n\n}\n",
+    "hint": "`for (let i = 0; i < 10; i++) { circle(25 + i * 50, 50, 40); }`",
+    "tests": [
+     {
+      "name": "Há dez círculos nas posições certas",
+      "expr": "verifica.argumentos(\"circle\").map(a => a[0])",
+      "expected": [
+       25,
+       75,
+       125,
+       175,
+       225,
+       275,
+       325,
+       375,
+       425,
+       475
+      ]
+     },
+     {
+      "name": "Todos em y = 50 com 40 de diâmetro",
+      "expr": "verifica.argumentos(\"circle\").every(a => a[1] === 50 && a[2] === 40)",
+      "expected": true
+     },
+     {
+      "name": "Usaste um ciclo for",
+      "expr": "verifica.noCodigo(\"for\\\\s*\\\\(\")",
+      "expected": true
+     }
+    ]
+   },
+   {
+    "id": "degrade",
+    "title": "Degradé",
+    "difficulty": 2,
+    "statement": "Numa tela de **256 × 100**, faz um degradé de **azul** (à esquerda) para **vermelho** (à direita) com **linhas verticais**:\n\n- para cada `x` de **0** a **255**, desenha uma linha de `(x, 0)` até `(x, 100)`;\n- a cor do traço é `(x, 0, 255 - x)`: na esquerda é azul puro e na direita vermelho puro.\n\nSão 256 linhas — só com um ciclo!",
+    "starter": "function setup() {\n  createCanvas(256, 100);\n\n}\n",
+    "hint": "`for (let x = 0; x < 256; x++) { stroke(x, 0, 255 - x); line(x, 0, x, 100); }`",
+    "tests": [
+     {
+      "name": "Há 256 linhas",
+      "expr": "verifica.chamadas(\"line\")",
+      "expected": 256
+     },
+     {
+      "name": "São linhas verticais, de cima a baixo, em x = 0, 1, 2, …",
+      "expr": "verifica.formas(\"line\").every((f, i) => f.a.join() === [i, 0, i, 100].join())",
+      "expected": true
+     },
+     {
+      "name": "A primeira linha é azul",
+      "expr": "verifica.formas(\"line\")[0].stroke",
+      "expected": "#0000ff"
+     },
+     {
+      "name": "A do meio é roxa",
+      "expr": "verifica.formas(\"line\")[128].stroke",
+      "expected": "#80007f"
+     },
+     {
+      "name": "A última linha é vermelha",
+      "expr": "verifica.formas(\"line\")[255].stroke",
+      "expected": "#ff0000"
+     }
+    ]
+   },
+   {
+    "id": "xadrez",
+    "title": "Tabuleiro de xadrez",
+    "difficulty": 3,
+    "statement": "Desenha um tabuleiro de xadrez **8 × 8** numa tela de **400 × 400**: cada casa é um quadrado de **50 × 50**.\n\n- A casa do canto superior esquerdo é **branca** (255) e as cores vão alternando com o **preto** (0), na horizontal e na vertical.\n- Usa **dois ciclos `for`**, um dentro do outro.",
+    "starter": "function setup() {\n  createCanvas(400, 400);\n  noStroke();\n\n}\n",
+    "hint": "Dentro dos dois ciclos (`linha` e `coluna`), a casa é branca quando `(linha + coluna) % 2 === 0`. Usa `if`/`else` para escolher o `fill` e depois `square(coluna * 50, linha * 50, 50);`.",
+    "tests": [
+     {
+      "name": "As 64 casas têm a cor certa",
+      "expr": "(() => { for (let j = 0; j < 8; j++) for (let i = 0; i < 8; i++) { if (verifica.cor(i * 50 + 25, j * 50 + 25) !== ((i + j) % 2 ? \"#000000\" : \"#ffffff\")) return false; } return true; })()",
+      "expected": true
+     },
+     {
+      "name": "Usaste dois ciclos for",
+      "expr": "verifica.noCodigo(\"for\\\\s*\\\\([\\\\s\\\\S]*for\\\\s*\\\\(\")",
+      "expected": true
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "aleatorio",
+  "track": "Animação",
+  "title": "Aleatório e ruído",
+  "icon": "🎲",
+  "summary": "random(), noise() e map() para arte generativa.",
+  "lesson": "# Aleatório e ruído\n\nNa **arte generativa**, o artista escreve as regras e o computador escolhe os pormenores. Para isso precisamos de números que o próprio programa inventa.\n\n## random()\n\n| Escreves | Dá |\n|---|---|\n| `random(10)` | um número decimal entre 0 e 10 (sem chegar ao 10) |\n| `random(50, 100)` | um número entre 50 e 100 |\n| `random([\"vermelho\", \"azul\"])` | um dos elementos da lista, à sorte |\n\nCada vez que chamas `random`, sai um número diferente:\n\n```js\nfunction setup() {\n  createCanvas(400, 300);\n  background(20);\n  noStroke();\n  for (let i = 0; i < 100; i++) {\n    fill(random(255), random(255), random(255), 180);\n    circle(random(width), random(height), random(5, 40));\n  }\n}\n```\n\nCarrega várias vezes em **Experimentar**: o desenho é sempre diferente!\n\n> 💡 Para números inteiros, usa `floor(random(6)) + 1` (um dado: 1 a 6).\n\n## noise(): aleatório \"suave\"\n\nO `random` salta de um valor para outro sem ligação nenhuma. O **`noise`** (ruído de Perlin) dá valores entre **0 e 1** que mudam **devagar**: valores próximos à entrada dão resultados próximos à saída. É ótimo para movimentos naturais, como uma folha ao vento.\n\n```js\nlet t = 0;\n\nfunction setup() {\n  createCanvas(400, 200);\n}\n\nfunction draw() {\n  background(240);\n  let x = noise(t) * width;              // noise dá 0..1; vezes width dá 0..400\n  let y = noise(t + 100) * height;       // outra \"zona\" do ruído para o y\n  circle(x, y, 30);\n  t = t + 0.01;                          // avançar devagar = movimento suave\n}\n```\n\n## map(): mudar de escala\n\n`map(valor, min1, max1, min2, max2)` converte um valor de uma escala para outra. Por exemplo, `map(x, 0, width, 0, 255)` transforma uma posição (0 a 400) numa cor (0 a 255):\n\n```js\nfunction setup() {\n  createCanvas(400, 100);\n  noStroke();\n  for (let x = 0; x < width; x += 20) {\n    fill(map(x, 0, width, 0, 255), 120, 200);\n    rect(x, 0, 20, 100);\n  }\n}\n```\n\n> 🎯 Nas verificações dos exercícios, o `random` dá sempre a mesma sequência de números (com `randomSeed`), por isso o resultado é sempre o mesmo.\n",
+  "exercises": [
+   {
+    "id": "ceu-estrelado",
+    "title": "Céu estrelado",
+    "difficulty": 1,
+    "statement": "Numa tela de **400 × 400** com fundo azul-noite **(10, 10, 40)**, desenha **150 estrelas**: pontos brancos em posições **aleatórias**, espalhados por toda a tela.\n\nDesenha tudo no `setup()` (as estrelas não se mexem).",
+    "starter": "function setup() {\n  createCanvas(400, 400);\n  background(10, 10, 40);\n  stroke(255);\n  strokeWeight(2);\n\n}\n",
+    "hint": "`for (let i = 0; i < 150; i++) { point(random(width), random(height)); }`",
+    "tests": [
+     {
+      "name": "Há 150 estrelas",
+      "expr": "verifica.chamadas(\"point\")",
+      "expected": 150
+     },
+     {
+      "name": "Estão todas dentro da tela",
+      "expr": "verifica.argumentos(\"point\").every(([x, y]) => x >= 0 && x <= 400 && y >= 0 && y <= 400)",
+      "expected": true
+     },
+     {
+      "name": "Estão espalhadas (posições aleatórias)",
+      "expr": "(() => { const p = verifica.argumentos(\"point\"); return new Set(p.map(a => a[0])).size > 100 && p.some(a => a[0] < 100) && p.some(a => a[0] > 300) && p.some(a => a[1] < 100) && p.some(a => a[1] > 300); })()",
+      "expected": true
+     }
+    ]
+   },
+   {
+    "id": "bola-nervosa",
+    "title": "Bola nervosa",
+    "difficulty": 2,
+    "statement": "Numa tela de **400 × 400**, desenha em cada frame um círculo com **50** de diâmetro **perto do centro**: em cada frame, o centro fica num sítio aleatório entre **195 e 205** (no x e no y), por isso a bola \"treme\".\n\nPinta o fundo em cada frame.",
+    "starter": "function setup() {\n  createCanvas(400, 400);\n}\n\nfunction draw() {\n  background(250, 230, 200);\n  fill(200, 60, 60);\n  circle(200, 200, 50);\n}\n",
+    "hint": "`circle(200 + random(-5, 5), 200 + random(-5, 5), 50);` ou `circle(random(195, 205), random(195, 205), 50);`",
+    "tests": [
+     {
+      "name": "A bola fica sempre perto do centro",
+      "expr": "(() => { for (let i = 0; i < 60; i++) { const [x, y, d] = verifica.avanca().argumentos(\"circle\")[0]; if (Math.abs(x - 200) > 5 || Math.abs(y - 200) > 5 || d !== 50) return false; } return true; })()",
+      "expected": true
+     },
+     {
+      "name": "A bola treme (muda de posição)",
+      "expr": "(() => { const xs = new Set(), ys = new Set(); for (let i = 0; i < 30; i++) { const [x, y] = verifica.avanca().argumentos(\"circle\")[0]; xs.add(x); ys.add(y); } return xs.size > 10 && ys.size > 10; })()",
+      "expected": true
+     }
+    ]
+   },
+   {
+    "id": "passeio-suave",
+    "title": "Passeio suave",
+    "difficulty": 3,
+    "statement": "Faz uma bola passear **suavemente** pela tela (**400 × 400**) com `noise()`:\n\n1. cria uma variável **`t`** a começar em 0;\n2. no `draw()`, a bola (30 de diâmetro) fica em `x = noise(t) * width` e `y = noise(t + 1000) * height`;\n3. no fim de cada frame, soma **0.01** ao `t`.\n\nAo contrário do `random`, a bola não salta: desliza.",
+    "starter": "let t = 0;\n\nfunction setup() {\n  createCanvas(400, 400);\n}\n\nfunction draw() {\n  background(230, 240, 255);\n  let x = random(width);\n  let y = random(height);\n  circle(x, y, 30);\n}\n",
+    "hint": "Troca os `random(...)` por `noise(t) * width` e `noise(t + 1000) * height`, e acrescenta `t = t + 0.01;` no fim do `draw()`.",
+    "tests": [
+     {
+      "name": "Usaste noise()",
+      "expr": "verifica.avanca().usou(\"noise\")",
+      "expected": true
+     },
+     {
+      "name": "A bola não dá saltos (move-se no máximo 10 píxeis por frame)",
+      "expr": "(() => { let [px, py] = verifica.argumentos(\"circle\")[0]; for (let i = 0; i < 300; i++) { const [x, y] = verifica.avanca().argumentos(\"circle\")[0]; if (Math.abs(x - px) > 10 || Math.abs(y - py) > 10) return false; px = x; py = y; } return true; })()",
+      "expected": true
+     },
+     {
+      "name": "A bola passeia (não fica parada)",
+      "expr": "(() => { const xs = []; for (let i = 0; i < 300; i++) xs.push(verifica.avanca().argumentos(\"circle\")[0][0]); return Math.max(...xs) - Math.min(...xs) > 40; })()",
+      "expected": true
+     },
+     {
+      "name": "A bola fica dentro da tela",
+      "expr": "(() => { for (let i = 0; i < 200; i++) { const [x, y] = verifica.avanca().argumentos(\"circle\")[0]; if (x < 0 || x > 400 || y < 0 || y > 400) return false; } return true; })()",
+      "expected": true
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "rato",
+  "track": "Interação",
+  "title": "O rato",
+  "icon": "🖱️",
+  "summary": "mouseX, mouseY, mouseIsPressed e mousePressed() para sketches interativos.",
+  "lesson": "# O rato\n\nAté agora, o sketch fazia sempre o mesmo. Com o rato, quem está a ver passa a participar!\n\n## Onde está o rato?\n\nO p5 atualiza estas variáveis em cada frame:\n\n| Variável | O que guarda |\n|---|---|\n| `mouseX`, `mouseY` | a posição atual do rato na tela |\n| `pmouseX`, `pmouseY` | a posição do rato no frame **anterior** |\n| `mouseIsPressed` | `true` enquanto o botão está carregado, `false` caso contrário |\n\n```js\nfunction setup() {\n  createCanvas(400, 300);\n}\n\nfunction draw() {\n  background(30);\n  fill(255, 200, 0);\n  circle(mouseX, mouseY, 40);     // a bola segue o rato\n  if (mouseIsPressed) {\n    fill(255, 0, 80);\n    circle(mouseX, mouseY, 80);   // e cresce quando carregas\n  }\n}\n```\n\n## Funções de eventos\n\nTambém podes escrever funções que o p5 chama **sozinho** quando algo acontece:\n\n| Função | Quando é chamada |\n|---|---|\n| `mousePressed()` | uma vez, quando carregas no botão |\n| `mouseReleased()` | quando largas o botão |\n| `mouseClicked()` | quando fazes um clique (carregar e largar) |\n| `mouseMoved()` | quando o rato se mexe sem botão carregado |\n| `mouseDragged()` | quando o rato se mexe com o botão carregado |\n\n```js\nlet cliques = 0;\n\nfunction setup() {\n  createCanvas(300, 200);\n  textSize(48);\n  textAlign(CENTER, CENTER);\n}\n\nfunction draw() {\n  background(240);\n  text(cliques, width / 2, height / 2);\n}\n\nfunction mousePressed() {\n  cliques = cliques + 1;    // conta cada clique, uma só vez\n}\n```\n\n> 💡 **Qual a diferença?** `mouseIsPressed` no `draw()` é verdadeiro em **todos** os frames enquanto o botão está em baixo (60 vezes por segundo!). `mousePressed()` corre **uma vez** por clique. Para contar cliques, usa a função.\n\n## O rato está dentro de uma forma?\n\n`dist(x1, y1, x2, y2)` dá a distância entre dois pontos. O rato está dentro de um círculo quando a distância ao centro é menor do que o **raio** (metade do diâmetro):\n\n```js\nif (dist(mouseX, mouseY, 200, 150) < 50) {\n  // o rato está dentro do círculo de centro (200, 150) e diâmetro 100\n}\n```\n\n## Escrever texto\n\n`text(\"Olá\", x, y)` escreve texto na tela; `textSize(32)` muda o tamanho da letra e `textAlign(CENTER, CENTER)` centra o texto no ponto (x, y).\n",
+  "exercises": [
+   {
+    "id": "segue-o-rato",
+    "title": "Segue o rato",
+    "difficulty": 1,
+    "statement": "Numa tela de **400 × 300**, desenha em cada frame um círculo com **50** de diâmetro na **posição do rato**. Pinta o fundo em cada frame, para não deixar rasto.",
+    "starter": "function setup() {\n  createCanvas(400, 300);\n}\n\nfunction draw() {\n  background(20, 20, 40);\n  fill(100, 200, 255);\n  circle(200, 150, 50);\n}\n",
+    "hint": "Troca `200, 150` por `mouseX, mouseY`.",
+    "tests": [
+     {
+      "name": "O círculo vai para onde está o rato",
+      "expr": "verifica.rato(100, 50).avanca().argumentos(\"circle\")",
+      "expected": [
+       [
+        100,
+        50,
+        50
+       ]
+      ]
+     },
+     {
+      "name": "E continua a seguir o rato",
+      "expr": "verifica.rato(320, 260).avanca().argumentos(\"circle\")",
+      "expected": [
+       [
+        320,
+        260,
+        50
+       ]
+      ]
+     },
+     {
+      "name": "Não deixa rasto",
+      "expr": "verifica.rato(100, 50).avanca().rato(300, 250).avanca().cor(100, 50)",
+      "expected": "#141428"
+     }
+    ]
+   },
+   {
+    "id": "pincel",
+    "title": "Pincel",
+    "difficulty": 2,
+    "statement": "Transforma o sketch num programa de desenho (tela de **400 × 400**, fundo branco só no `setup()`):\n\n- **enquanto o botão do rato estiver carregado**, desenha uma linha **preta** com **8** de grossura, da posição anterior do rato (`pmouseX`, `pmouseY`) até à atual (`mouseX`, `mouseY`);\n- sem o botão carregado, não desenha nada.",
+    "starter": "function setup() {\n  createCanvas(400, 400);\n  background(255);\n}\n\nfunction draw() {\n  stroke(0);\n  strokeWeight(8);\n\n}\n",
+    "hint": "`if (mouseIsPressed) { line(pmouseX, pmouseY, mouseX, mouseY); }`",
+    "tests": [
+     {
+      "name": "Sem carregar no botão, não pinta",
+      "expr": "verifica.rato(100, 100).avanca().rato(300, 100).avanca().cor(200, 100)",
+      "expected": "#ffffff"
+     },
+     {
+      "name": "Com o botão carregado, pinta",
+      "expr": "verifica.rato(100, 100).avanca().prime(100, 100).avanca().rato(300, 100).avanca().cor(200, 100)",
+      "expected": "#000000"
+     },
+     {
+      "name": "Depois de largar o botão, para de pintar",
+      "expr": "verifica.rato(100, 300).avanca().prime(100, 300).avanca().solta().rato(300, 300).avanca().cor(200, 300)",
+      "expected": "#ffffff"
+     },
+     {
+      "name": "O fundo não é apagado no draw()",
+      "expr": "verifica.avanca().chamadas(\"background\")",
+      "expected": 0
+     }
+    ]
+   },
+   {
+    "id": "botao",
+    "title": "Um botão",
+    "difficulty": 3,
+    "statement": "Faz um botão redondo que conta os cliques:\n\n1. o botão é um círculo com centro em **(200, 200)** e **100** de diâmetro;\n2. uma variável **`cliques`**, a começar em 0, aumenta **1** cada vez que se carrega **dentro** do botão (clicar fora não conta);\n3. o número de cliques aparece escrito na tela com `text(cliques, 200, 330)`.\n\nUsa a função `mousePressed()` e a função `dist()`.",
+    "starter": "let cliques = 0;\n\nfunction setup() {\n  createCanvas(400, 400);\n  textSize(40);\n  textAlign(CENTER, CENTER);\n}\n\nfunction draw() {\n  background(240);\n  fill(230, 60, 90);\n  circle(200, 200, 100);\n  fill(0);\n  text(cliques, 200, 330);\n}\n\nfunction mousePressed() {\n\n}\n",
+    "hint": "Dentro do `mousePressed()`: `if (dist(mouseX, mouseY, 200, 200) < 50) { cliques = cliques + 1; }` (50 é o raio).",
+    "tests": [
+     {
+      "name": "Um clique no botão conta",
+      "expr": "verifica.clica(200, 200).variavel(\"cliques\")",
+      "expected": 1
+     },
+     {
+      "name": "Um clique fora do botão não conta",
+      "expr": "verifica.clica(20, 20).clica(380, 380).variavel(\"cliques\")",
+      "expected": 0
+     },
+     {
+      "name": "Conta perto da borda, por dentro",
+      "expr": "verifica.clica(240, 200).clica(200, 160).variavel(\"cliques\")",
+      "expected": 2
+     },
+     {
+      "name": "O número aparece na tela",
+      "expr": "verifica.clica(200, 200).clica(210, 190).avanca().argumentos(\"text\").some(a => String(a[0]) === \"2\")",
+      "expected": true
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "teclado",
+  "track": "Interação",
+  "title": "O teclado",
+  "icon": "⌨️",
+  "summary": "keyPressed(), key, keyIsDown() e as setas — o início de um jogo.",
+  "lesson": "# O teclado\n\nCom o teclado, os teus sketches começam a parecer **jogos**: mover uma nave, mudar de cor, escrever texto.\n\n## keyPressed() e key\n\nA função **`keyPressed()`** é chamada **uma vez** sempre que se carrega numa tecla. Lá dentro, a variável **`key`** diz qual foi:\n\n```js\nlet fundo = 255;\n\nfunction setup() {\n  createCanvas(400, 200);\n}\n\nfunction draw() {\n  background(fundo);\n  text(\"Carrega em p (preto) ou b (branco)\", 20, 100);\n}\n\nfunction keyPressed() {\n  if (key === \"p\") {\n    fundo = 0;\n  }\n  if (key === \"b\") {\n    fundo = 255;\n  }\n}\n```\n\n> 💡 Clica primeiro no resultado do sketch: as teclas só chegam ao sketch se ele tiver o \"foco\".\n\n## Teclas especiais: keyCode\n\nPara as teclas que não são letras usa-se **`keyCode`** e as constantes do p5:\n\n| Constante | Tecla |\n|---|---|\n| `LEFT_ARROW`, `RIGHT_ARROW` | setas ← → |\n| `UP_ARROW`, `DOWN_ARROW` | setas ↑ ↓ |\n| `ENTER`, `ESCAPE`, `BACKSPACE` | Enter, Esc, apagar |\n\n```js\nfunction keyPressed() {\n  if (keyCode === LEFT_ARROW) {\n    x = x - 10;\n  }\n}\n```\n\n## Teclas mantidas: keyIsDown()\n\nO `keyPressed()` corre uma vez por toque. Para um movimento **contínuo** enquanto a tecla está carregada (como num jogo), pergunta no `draw()` com **`keyIsDown(código)`**:\n\n```js\nlet x = 200;\n\nfunction setup() {\n  createCanvas(400, 200);\n}\n\nfunction draw() {\n  background(20);\n  if (keyIsDown(LEFT_ARROW)) {\n    x = x - 5;\n  }\n  if (keyIsDown(RIGHT_ARROW)) {\n    x = x + 5;\n  }\n  x = constrain(x, 0, width);   // não deixa sair da tela\n  fill(0, 255, 150);\n  triangle(x - 20, 180, x + 20, 180, x, 140);\n}\n```\n\n`constrain(valor, mínimo, máximo)` \"prende\" um valor entre dois limites.\n\n## Escrever texto: keyTyped()\n\n`keyTyped()` é chamada quando se escreve um carácter (letras, números, espaço…). É a melhor para juntar letras num texto: `texto = texto + key;`.\n",
+  "exercises": [
+   {
+    "id": "teclas-de-cor",
+    "title": "Teclas de cor",
+    "difficulty": 1,
+    "statement": "O fundo da tela começa **branco** e muda de cor com o teclado:\n\n| Tecla | Cor do fundo |\n|---|---|\n| `r` | vermelho (255, 0, 0) |\n| `g` | verde (0, 200, 0) |\n| `b` | azul (0, 0, 255) |\n\nGuarda a cor em variáveis e muda-as dentro de `keyPressed()`.",
+    "starter": "let r = 255;\nlet g = 255;\nlet b = 255;\n\nfunction setup() {\n  createCanvas(400, 300);\n}\n\nfunction draw() {\n  background(r, g, b);\n}\n\nfunction keyPressed() {\n\n}\n",
+    "hint": "`if (key === \"r\") { r = 255; g = 0; b = 0; }` — e o mesmo para as outras teclas.",
+    "tests": [
+     {
+      "name": "Começa branco",
+      "expr": "verifica.cor(5, 5)",
+      "expected": "#ffffff"
+     },
+     {
+      "name": "r, g e b mudam a cor",
+      "expr": "[verifica.tecla(\"r\").avanca().cor(5, 5), verifica.tecla(\"g\").avanca().cor(5, 5), verifica.tecla(\"b\").avanca().cor(5, 5)]",
+      "expected": [
+       "#ff0000",
+       "#00c800",
+       "#0000ff"
+      ]
+     },
+     {
+      "name": "Outras teclas não mudam nada",
+      "expr": "verifica.tecla(\"b\").avanca().tecla(\"x\").avanca().cor(5, 5)",
+      "expected": "#0000ff"
+     }
+    ]
+   },
+   {
+    "id": "nave",
+    "title": "Nave às setas",
+    "difficulty": 2,
+    "statement": "A nave (um retângulo de **40 × 20** em `(x, 360)`) tem de se mexer com as setas:\n\n- enquanto a **seta para a esquerda** estiver carregada, `x` diminui **5** por frame;\n- enquanto a **seta para a direita** estiver carregada, `x` aumenta **5** por frame;\n- a nave nunca sai da tela: `x` fica sempre entre **0** e **360** (`width - 40`).\n\nUsa `keyIsDown()` dentro do `draw()`.",
+    "starter": "let x = 200;\n\nfunction setup() {\n  createCanvas(400, 400);\n}\n\nfunction draw() {\n  background(10, 10, 30);\n\n  fill(0, 255, 150);\n  rect(x, 360, 40, 20);\n}\n",
+    "hint": "`if (keyIsDown(RIGHT_ARROW)) { x = x + 5; }`, o mesmo para a esquerda, e no fim `x = constrain(x, 0, width - 40);`.",
+    "tests": [
+     {
+      "name": "Anda para a direita com a seta →",
+      "expr": "verifica.segura(\"RIGHT_ARROW\").avanca(10).variavel(\"x\")",
+      "expected": 250
+     },
+     {
+      "name": "Anda para a esquerda com a seta ←",
+      "expr": "verifica.segura(\"LEFT_ARROW\").avanca(10).variavel(\"x\")",
+      "expected": 150
+     },
+     {
+      "name": "Para quando se larga a tecla",
+      "expr": "verifica.segura(\"RIGHT_ARROW\").avanca(4).larga(\"RIGHT_ARROW\").avanca(10).variavel(\"x\")",
+      "expected": 220
+     },
+     {
+      "name": "Não sai da tela",
+      "expr": "[verifica.segura(\"LEFT_ARROW\").avanca(100).variavel(\"x\"), verifica.larga(\"LEFT_ARROW\").segura(\"RIGHT_ARROW\").avanca(200).variavel(\"x\")]",
+      "expected": [
+       0,
+       360
+      ]
+     }
+    ]
+   },
+   {
+    "id": "maquina-de-escrever",
+    "title": "Máquina de escrever",
+    "difficulty": 2,
+    "statement": "Cada letra que se escreve no teclado é acrescentada ao fim da variável **`texto`** (que começa vazia: `\"\"`), e o texto aparece na tela com `text(texto, 20, 100)`.\n\nUsa a função `keyTyped()`.",
+    "starter": "let texto = \"\";\n\nfunction setup() {\n  createCanvas(500, 200);\n  textSize(32);\n}\n\nfunction draw() {\n  background(255, 250, 230);\n  fill(40);\n  text(texto, 20, 100);\n}\n",
+    "hint": "`function keyTyped() { texto = texto + key; }`",
+    "tests": [
+     {
+      "name": "As letras juntam-se ao texto",
+      "expr": "verifica.tecla(\"o\").tecla(\"l\").tecla(\"a\").variavel(\"texto\")",
+      "expected": "ola"
+     },
+     {
+      "name": "O espaço também conta",
+      "expr": "verifica.tecla(\"o\").tecla(\" \").tecla(\"p\").tecla(\"5\").variavel(\"texto\")",
+      "expected": "o p5"
+     },
+     {
+      "name": "O texto aparece na tela",
+      "expr": "verifica.tecla(\"o\").tecla(\"i\").avanca().argumentos(\"text\").map(a => a[0])",
+      "expected": [
+       "oi"
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "funcoes",
+  "track": "Interação",
+  "title": "Funções e arrays",
+  "icon": "🧩",
+  "summary": "As tuas próprias funções, listas de valores e muitos objetos ao mesmo tempo.",
+  "lesson": "# Funções e arrays\n\nOs sketches estão a crescer. Duas ferramentas ajudam a mantê-los arrumados: **funções** (dar um nome a um bloco de código) e **arrays** (guardar muitos valores numa só variável).\n\n## As tuas próprias funções\n\nJá escreves funções há muito tempo: `setup()` e `draw()`! Podes criar outras. Com **parâmetros**, a mesma função desenha em sítios diferentes:\n\n```js\nfunction setup() {\n  createCanvas(400, 200);\n  background(200, 230, 255);\n  arvore(80, 180);\n  arvore(200, 180);\n  arvore(320, 180);\n}\n\nfunction arvore(x, y) {\n  fill(120, 80, 40);\n  rect(x - 10, y - 60, 20, 60);     // tronco\n  fill(40, 160, 70);\n  circle(x, y - 80, 70);            // copa\n}\n```\n\n`x` e `y` são os **parâmetros**: em cada chamada recebem os valores que estão entre parênteses.\n\n## Funções que devolvem um valor\n\nCom **`return`**, uma função faz uma conta e devolve o resultado:\n\n```js\nfunction dobro(n) {\n  return n * 2;\n}\n\nfunction setup() {\n  print(dobro(21));   // escreve 42 na consola\n}\n```\n\n## Arrays\n\nUm **array** é uma lista de valores, entre `[` e `]`:\n\n```js\nlet cores = [\"red\", \"orange\", \"gold\"];\n```\n\n| Escreves | Dá |\n|---|---|\n| `cores[0]` | o primeiro elemento (`\"red\"`) — conta-se a partir de **0**! |\n| `cores.length` | quantos elementos tem (3) |\n| `cores.push(\"pink\")` | acrescenta um elemento no fim |\n\nCom um ciclo `for` percorres o array todo:\n\n```js\nfor (let i = 0; i < cores.length; i++) {\n  fill(cores[i]);\n  circle(50 + i * 60, 50, 50);\n}\n```\n\n## Objetos: juntar dados\n\nUm **objeto** junta várias informações sobre a mesma coisa, entre `{` e `}`:\n\n```js\nlet bola = { x: 100, y: 50, v: 2 };\nbola.y = bola.y + bola.v;    // lê e muda com o ponto\n```\n\nUm array de objetos permite animar **muitas** coisas ao mesmo tempo:\n\n```js\nlet bolas = [];\n\nfunction setup() {\n  createCanvas(400, 300);\n}\n\nfunction draw() {\n  background(20);\n  for (let i = 0; i < bolas.length; i++) {\n    bolas[i].y = bolas[i].y + 2;\n    circle(bolas[i].x, bolas[i].y, 20);\n  }\n}\n\nfunction mousePressed() {\n  bolas.push({ x: mouseX, y: mouseY });   // cada clique cria uma bola nova\n}\n```\n",
+  "exercises": [
+   {
+    "id": "jardim",
+    "title": "Um jardim de funções",
+    "difficulty": 2,
+    "statement": "1. Cria uma função **`flor(x, y)`** que desenha uma flor com centro em `(x, y)`: **4 pétalas** (círculos com 30 de diâmetro, à volta do centro) e, por cima, o miolo — um círculo **amarelo (255, 255, 0)** com **25** de diâmetro em `(x, y)`.\n2. No `setup()`, chama a função **três vezes** para desenhar flores em **(100, 200)**, **(200, 150)** e **(300, 250)**.",
+    "starter": "function setup() {\n  createCanvas(400, 400);\n  background(120, 200, 120);\n  // chama aqui a função flor três vezes\n}\n\n// cria aqui a função flor(x, y)\n",
+    "hint": "As pétalas podem ficar em `(x - 15, y)`, `(x + 15, y)`, `(x, y - 15)` e `(x, y + 15)`. O miolo vem no fim: `fill(255, 255, 0); circle(x, y, 25);`.",
+    "tests": [
+     {
+      "name": "Existe a função flor",
+      "expr": "verifica.existe(\"flor\")",
+      "expected": true
+     },
+     {
+      "name": "Os miolos amarelos estão nos três sítios",
+      "expr": "verifica.formas(\"circle\", \"ellipse\").filter(f => f.fill === \"#ffff00\" && f.a[2] === 25).map(f => f.a[0] + \",\" + f.a[1]).sort()",
+      "expected": [
+       "100,200",
+       "200,150",
+       "300,250"
+      ]
+     },
+     {
+      "name": "Cada flor tem pelo menos 4 pétalas",
+      "expr": "verifica.formas(\"circle\", \"ellipse\").filter(f => f.fill !== \"#ffff00\").length >= 12",
+      "expected": true
+     },
+     {
+      "name": "O miolo fica por cima das pétalas",
+      "expr": "(() => { const f = verifica.formas(\"circle\", \"ellipse\"); return f.length > 0 && f[f.length - 1].fill === \"#ffff00\"; })()",
+      "expected": true
+     }
+    ]
+   },
+   {
+    "id": "contas",
+    "title": "Funções que devolvem",
+    "difficulty": 2,
+    "statement": "Escreve duas funções que **devolvem** (com `return`) o resultado de uma conta:\n\n1. **`media(a, b)`** — a média de dois números (`media(4, 10)` dá 7);\n2. **`areaCirculo(r)`** — a área de um círculo de raio `r`: π × r × r (no p5, π é a constante **`PI`**).\n\nO `setup()` do código inicial usa as funções para escrever os resultados na tela.",
+    "starter": "function setup() {\n  createCanvas(400, 200);\n  background(255);\n  textSize(24);\n  text(\"Média de 4 e 10: \" + media(4, 10), 20, 80);\n  text(\"Área (r = 2): \" + areaCirculo(2), 20, 140);\n}\n\n// escreve aqui as funções media e areaCirculo\n",
+    "hint": "`function media(a, b) { return (a + b) / 2; }` — atenção aos parênteses: sem eles, só o `b` é dividido!",
+    "tests": [
+     {
+      "name": "media(4, 10) dá 7",
+      "expr": "verifica.chama(\"media\", 4, 10)",
+      "expected": 7
+     },
+     {
+      "name": "media(1, 2) dá 1.5",
+      "expr": "verifica.chama(\"media\", 1, 2)",
+      "expected": 1.5
+     },
+     {
+      "name": "areaCirculo(2) dá 12.57 (arredondado)",
+      "expr": "verifica.chama(\"areaCirculo\", 2)",
+      "expected": 12.57
+     },
+     {
+      "name": "areaCirculo(10) dá 314.16 (arredondado)",
+      "expr": "verifica.chama(\"areaCirculo\", 10)",
+      "expected": 314.16
+     }
+    ]
+   },
+   {
+    "id": "chuva",
+    "title": "Chuva de bolas",
+    "difficulty": 3,
+    "statement": "Cria uma chuva de bolas com um **array de objetos**:\n\n1. o array **`bolas`** começa vazio;\n2. cada clique (`mousePressed()`) acrescenta ao array uma bola nova na posição do rato: `{ x: mouseX, y: mouseY }`;\n3. em cada frame, **todas** as bolas descem **3** píxeis e são desenhadas com `circle(bola.x, bola.y, 20)`.",
+    "starter": "let bolas = [];\n\nfunction setup() {\n  createCanvas(400, 400);\n}\n\nfunction draw() {\n  background(20, 30, 50);\n  fill(120, 200, 255);\n  // percorre o array: cada bola desce 3 e é desenhada\n\n}\n\nfunction mousePressed() {\n\n}\n",
+    "hint": "No `mousePressed()`: `bolas.push({ x: mouseX, y: mouseY });`. No `draw()`: `for (let i = 0; i < bolas.length; i++) { bolas[i].y = bolas[i].y + 3; circle(bolas[i].x, bolas[i].y, 20); }`.",
+    "tests": [
+     {
+      "name": "Cada clique cria uma bola",
+      "expr": "[verifica.variavel(\"bolas.length\"), verifica.clica(100, 50).clica(300, 80).variavel(\"bolas.length\")]",
+      "expected": [
+       0,
+       2
+      ]
+     },
+     {
+      "name": "As bolas novas ficam onde se clicou",
+      "expr": "verifica.clica(100, 50).clica(300, 80).variavel(\"bolas\").map(b => [b.x, b.y])",
+      "expected": [
+       [
+        100,
+        50
+       ],
+       [
+        300,
+        80
+       ]
+      ]
+     },
+     {
+      "name": "Todas as bolas são desenhadas",
+      "expr": "verifica.clica(100, 50).clica(300, 80).clica(200, 10).avanca().chamadas(\"circle\")",
+      "expected": 3
+     },
+     {
+      "name": "As bolas descem 3 píxeis por frame",
+      "expr": "(() => { verifica.clica(100, 50); const y1 = verifica.avanca().argumentos(\"circle\")[0][1]; const y2 = verifica.avanca(10).argumentos(\"circle\")[0][1]; return y2 - y1; })()",
+      "expected": 30
+     }
+    ]
+   }
+  ]
+ }
+]
