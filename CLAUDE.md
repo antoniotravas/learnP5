@@ -35,8 +35,11 @@
     - Nas verificações, o draw() não corre sozinho: é o verifica.avanca(n) que avança frames, e rato/clica/tecla/segura
       simulam eventos. randomSeed/noiseSeed fixos (42) e pixelDensity 1, por isso os resultados são estáveis.
       Cada verificação corre num iframe novo.
-    - Os iframes têm sandbox="allow-scripts" (origem opaca) e carregam o p5 e o harness com crossorigin: o servidor
-      tem de mandar Access-Control-Allow-Origin nos .js (está no .htaccess e no dev-router.php).
+    - Os iframes têm sandbox="allow-scripts" (origem opaca). O p5.js e o harness são descarregados pela página e
+      embutidos no srcdoc do iframe (loadLibs em sketch.js): assim não dependem de CORS, que o LiteSpeed do servidor
+      não manda (ignora as regras Header do .htaccess).
+    - O LiteSpeed também ignora o no-cache e guarda .js/.css 30 dias: o build_dist.mjs acrescenta ?v=<versão> aos
+      endereços em index.html e nos imports dos .js. Escreve sempre os endereços /static/... por extenso.
     - p5.js 1.11.13 servido localmente (public/static/vendor/).
     - Deploy: node tools/build_dist.mjs gera dist/learnp5-site.zip.
     - Tudo em português europeu. Não fazer commits sem o utilizador pedir.

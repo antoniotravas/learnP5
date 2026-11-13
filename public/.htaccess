@@ -19,4 +19,9 @@ RewriteRule ^api/ api.php [L,QSA]
   <FilesMatch "\.(html|js|css)$">
     Header set Cache-Control "no-cache"
   </FilesMatch>
+  # Os iframes dos sketches (sandbox, origem opaca) carregam o p5.js e o harness com crossorigin:
+  # sem isto, os sketches não arrancam.
+  <FilesMatch "\.js$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
 </IfModule>

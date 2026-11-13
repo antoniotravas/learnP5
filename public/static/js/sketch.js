@@ -2,7 +2,8 @@
 // e fala com ele por postMessage. Usado pela pré-visualização e pelas verificações dos exercícios.
 
 export const P5_VERSION = "1.11.13";
-const P5_URL = `/static/vendor/p5-${P5_VERSION}.min.js`;
+// (endereços escritos por extenso: o tools/build_dist.mjs acrescenta-lhes ?v=versão, por causa da cache)
+const P5_URL = "/static/vendor/p5-1.11.13.min.js";
 const HARNESS_URL = "/static/js/harness.js";
 export const SEED = 42;
 
@@ -100,26 +101,49 @@ export function protectLoops(code) {
   return out.join("");
 }
 
+/**
+ * O p5.js e o harness são descarregados uma vez por esta página (mesma origem) e embutidos no iframe.
+ * Assim não é preciso CORS — o iframe tem origem opaca e o servidor pode não mandar Access-Control-Allow-Origin —
+ * e os erros que acontecem dentro deles não chegam ao aluno como «Script error.».
+ */
+let libsPromise = null;
+export function loadLibs() {
+  const get = async (url) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Não foi possível carregar ${url} (erro ${res.status}).`);
+    // Garante que nada no texto fecha o <script> antes do tempo.
+    return (await res.text()).replace(/<\/script/gi, "<\\/script").replace(/<!--/g, "<\\!--");
+  };
+  libsPromise ??= Promise.all([get(P5_URL), get(HARNESS_URL)]).catch((e) => {
+    libsPromise = null;
+    throw e;
+  });
+  return libsPromise;
+}
+
 /** O documento do iframe: p5.js, o harness e (dentro da configuração) o código do aluno. */
-export function srcdoc(code, mode, token) {
+export function srcdoc(code, mode, token, [p5js, harness]) {
   const cfg = JSON.stringify({ mode, token, seed: SEED, code: protectLoops(code) }).replace(/</g, "\\u003c");
-  const origin = location.origin;
   return `<!doctype html><html><head><meta charset="utf-8">
 <style>html,body{margin:0;padding:0;background:transparent;overflow:hidden}canvas{display:block}</style>
 <script>window.__CFG=${cfg};</script>
-<script crossorigin="anonymous" src="${origin}${P5_URL}"></script>
-<script crossorigin="anonymous" src="${origin}${HARNESS_URL}"></script>
+<script>${p5js}
+//# sourceURL=p5.min.js
+</script>
+<script>${harness}
+//# sourceURL=harness.js
+</script>
 </head><body></body></html>`;
 }
 
 const newToken = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
 
-function makeFrame(code, mode) {
+function makeFrame(code, mode, libs) {
   const token = newToken();
   const frame = document.createElement("iframe");
   frame.setAttribute("sandbox", "allow-scripts");
   frame.setAttribute("title", "Sketch de p5.js");
-  frame.srcdoc = srcdoc(code, mode, token);
+  frame.srcdoc = srcdoc(code, mode, token, libs);
   return { frame, token };
 }
 
@@ -138,10 +162,21 @@ export class Preview {
     this.resizeObserver.observe(stage);
   }
 
-  run(code) {
+  async run(code) {
     this.stop(false);
     this.consoleEl.innerHTML = "";
-    const { frame, token } = makeFrame(code, "run");
+    const ticket = (this.ticket = (this.ticket ?? 0) + 1);
+    let libs;
+    try {
+      libs = await loadLibs();
+    } catch (e) {
+      this.line(e.message, "c-err");
+      this.onStatus("error", {});
+      return;
+    }
+    // Entretanto carregaste outra vez em Executar, paraste, ou saíste da página.
+    if (ticket !== this.ticket || this.destroyed) return;
+    const { frame, token } = makeFrame(code, "run", libs);
     this.frame = frame;
     this.token = token;
     this.size = null;
@@ -154,6 +189,7 @@ export class Preview {
   }
 
   stop(showPlaceholder = true) {
+    if (showPlaceholder) this.ticket = (this.ticket ?? 0) + 1;
     if (this.frame) this.frame.remove();
     this.frame = null;
     this.token = null;
@@ -168,6 +204,7 @@ export class Preview {
   }
 
   destroy() {
+    this.destroyed = true;
     this.stop(false);
     removeEventListener("message", this.onMessage);
     this.resizeObserver.disconnect();
@@ -232,9 +269,15 @@ function checkHost() {
 }
 
 /** Corre uma verificação (expressão com `verifica`) num iframe novo. Devolve {actual} ou {error}. */
-function evaluate(code, expr, timeout = 8000) {
+async function evaluate(code, expr, timeout = 8000) {
+  let libs;
+  try {
+    libs = await loadLibs();
+  } catch (e) {
+    return { error: e.message };
+  }
   return new Promise((resolve) => {
-    const { frame, token } = makeFrame(code, "check");
+    const { frame, token } = makeFrame(code, "check", libs);
     frame.width = 1300;
     frame.height = 1000;
     let timer = null;

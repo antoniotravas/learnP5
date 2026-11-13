@@ -44,6 +44,14 @@ describe("conteúdo", () => {
   });
 });
 
+describe("publicação", () => {
+  test("o .htaccess encaminha /api/ para o api.php", async () => {
+    const { readFileSync } = await import("node:fs");
+    const { ROOT } = await import("./helpers.mjs");
+    assert.match(readFileSync(`${ROOT}/public/.htaccess`, "utf8"), /RewriteRule \^api\/ api\.php/);
+  });
+});
+
 describe("exercícios", () => {
   for (const ex of exercises) {
     if (only && ex.id !== only) continue;

@@ -4,7 +4,7 @@
 /** Erro com código HTTP; responde {"detail": ...}. */
 final class HttpError extends Exception
 {
-    public function __construct(public readonly int $status, public readonly string|array $detail)
+    public function __construct(public int $status, public string|array $detail)
     {
         parent::__construct(is_string($detail) ? $detail : 'Pedido inválido.');
     }

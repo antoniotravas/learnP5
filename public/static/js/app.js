@@ -53,6 +53,9 @@ async function api(path, { method = "GET", body } = {}) {
     throw new ApiError("Sessão terminada.");
   }
   const data = await res.json().catch(() => ({}));
+  if (res.status === 404 && data.detail === undefined) {
+    throw new ApiError("A API não respondeu (/api/ dá 404). Confirma que o ficheiro .htaccess está no public_html.");
+  }
   if (!res.ok) {
     const detail = Array.isArray(data.detail) ? "Verifica os dados introduzidos." : data.detail;
     throw new ApiError(detail || "Ocorreu um erro.");
@@ -611,7 +614,12 @@ async function route() {
   if (!profile) {
     try {
       await loadProfile();
-    } catch {
+    } catch (err) {
+      // Sessão terminada: o api() já mandou para o login. Outro erro (servidor em baixo, /api/ mal configurado):
+      // mostra-o, em vez de deixar a página em branco.
+      if (!(err instanceof ApiError && err.message === "Sessão terminada.")) {
+        view.innerHTML = `<div class="empty"><h2>😕 Não foi possível ligar ao servidor</h2><p>${esc(err.message)}</p><a href="#/" onclick="location.reload()">Tentar outra vez</a></div>`;
+      }
       return;
     }
   }
